@@ -17,9 +17,9 @@ impl Sentence {
     /// # Example
     /// 
     /// ```
-    /// use crate::entities::sentence::Sentence
+    /// use naromat::entities::sentence::Sentence;
     /// 
-    /// Sentence::new("我が輩は猫である。")
+    /// Sentence::new("我が輩は猫である。");
     /// ```
     pub fn new(sentence : &str) -> Self {
         Self { elements: sentence.trim_end().to_string() }
@@ -30,9 +30,9 @@ impl Sentence {
     /// # Example
     /// 
     /// ```
-    /// use crate::entities::sentence::Sentence
+    /// use naromat::entities::sentence::Sentence;
     /// 
-    /// let sentence = Sentence::new("我が輩は猫である。")
+    /// let sentence = Sentence::new("我が輩は猫である。");
     /// sentence.print()
     /// ```
     pub fn print(self) {
@@ -44,9 +44,9 @@ impl Sentence {
     /// # Example
     /// 
     /// ```
-    /// use crate::entities::sentence::Sentence
-    /// let sentence  Sentence::new("我が[輩:.]は[猫:ねこ]である")
-    /// assert_eq!(sentence.get(), "我が|輩《・》は|猫《ねこ》である")
+    /// use naromat::entities::sentence::Sentence;
+    /// let sentence = Sentence::new("我が[輩:.]は[猫:ねこ]である");
+    /// assert_eq!(sentence.get(), "我が|輩《・》は|猫《ねこ》である");
     /// ```
     /// 
     pub fn get(self) -> String {
