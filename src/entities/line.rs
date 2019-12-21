@@ -34,7 +34,7 @@ impl Line {
     /// use naromat::entities::line::Line;
     /// 
     /// let line = Line::new("我が輩は猫である。名前はまだない。");
-    /// sentence.print()
+    /// line.print()
     /// ```
     pub fn print(self) {
         for element in self.elements {
