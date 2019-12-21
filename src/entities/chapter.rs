@@ -27,9 +27,56 @@ impl Chapter {
         Self { lines: text.split_terminator('\n').map(|line| { Line::new(line) }).collect() }
     }
 
+    /// Print formatted chapter
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use naromat::entities::chapter::Chapter;
+    /// 
+    /// let chapter = Chapter::new("
+    /// 我が輩は猫である。名前はまだない。
+    /// どこで[生まれた:.]のかとんと[見当:けんとう]がつかぬ。
+    /// ");
+    /// chapter.print()
+    /// ```
     pub fn print(self) {
         for line in self.lines {
             line.print();
         }
+    }
+
+    /// Get string of formatted sentence
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use naromat::entities::chapter::Chapter;
+    /// 
+    /// let chapter = Chapter::new("
+    /// 我が輩は猫である。名前はまだない。
+    /// どこで[生まれた:.]のかとんと[見当:けんとう]がつかぬ。
+    /// ");
+    /// assert_eq!(chapter.get(), "
+    /// 　我が輩は猫である。名前はまだない。
+    /// 　どこで|生まれた《・・・・》のかとんと|見当《けんとう》がつかぬ。");
+    /// ```
+    pub fn get(self) -> String {
+        let text: Vec<String> = self.lines.into_iter().map(|line| line.get()).collect();
+        text.join("\n")
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::Chapter;
+
+    #[test]
+    fn get() {
+        let source   = "我が輩は猫である。名前はまだない。
+どこで[生まれた:.]のかとんと[見当:けんとう]がつかぬ。";
+        let expected = "　我が輩は猫である。名前はまだない。
+　どこで|生まれた《・・・・》のかとんと|見当《けんとう》がつかぬ。";
+        let chapter = Chapter::new(&source);
+        assert_eq!(chapter.get(), expected);
     }
 }

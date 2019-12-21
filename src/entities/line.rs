@@ -59,7 +59,7 @@ impl Line {
     /// Format line
     fn format(text : &str) -> Self {
         let line = Self::add_header_space(text.trim());
-        let line = Self::split(&line).into_iter().map(|sentence| Sentence::new(sentence)).collect();
+        let line = Self::split(&line).into_iter().map(|sentence| Sentence::new(&sentence)).collect();
         Self { elements: line }
     }
 
@@ -71,8 +71,8 @@ impl Line {
 
     /// Split line to sentences
     fn split(text : &str) -> Vec<&str> {
-        let line_terminators = Regex::new(r".*([」。.？！]|!\?|\?!)").unwrap();
-        line_terminators.find_iter(text).map(|m| m.as_str()).collect()
+        let sentence_terminators = Regex::new(r".*([」。.？！]|!\?|\?!)").unwrap();
+        sentence_terminators.find_iter(text).map(|m| m.as_str()).collect()
     }
 
     /// Return true if a line is speech line
