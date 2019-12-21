@@ -1,19 +1,54 @@
 use regex::Regex;
 use regex::Captures;
 
+/// Structure of novel sentence.
+/// 
+/// Sentences are defined below:
+/// * End with sentence-terminators ('.', ''))
+/// 
 pub struct Sentence {
     elements : String,
 }
 
+/// Implementation for novel sentence structure
 impl Sentence {
+    /// Constructor
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use crate::entities::sentence::Sentence
+    /// 
+    /// Sentence::new("我が輩は猫である。")
+    /// ```
     pub fn new(sentence : &str) -> Self {
         Self { elements: sentence.trim_end().to_string() }
     }
 
+    /// Print formatted sentence
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use crate::entities::sentence::Sentence
+    /// 
+    /// let sentence = Sentence::new("我が輩は猫である。")
+    /// sentence.print()
+    /// ```
     pub fn print(self) {
         println!("{}", self.format().elements)
     }
 
+    /// Get string of formatted sentence
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use crate::entities::sentence::Sentence
+    /// let sentence  Sentence::new("我が[輩:.]は[猫:ねこ]である")
+    /// assert_eq!(sentence.get(), "我が|輩《・》は|猫《ねこ》である")
+    /// ```
+    /// 
     pub fn get(self) -> String {
         self.format().elements.to_string()
     }
