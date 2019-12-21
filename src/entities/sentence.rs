@@ -9,6 +9,9 @@ use regex::Captures;
 ///     * '. '
 ///     * '。'
 ///     * '」'
+///     * '！'
+///     * '？'
+///     * '!?'
 /// 
 pub struct Sentence {
     elements : String,
