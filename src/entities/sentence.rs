@@ -74,7 +74,7 @@ impl Sentence {
 
     /// Convert kenten(圏点) format to Narou format.
     fn convert_kenten(&self) -> Self {
-        let kenten = Regex::new(r"\[(.*?):\.\]").unwrap();
+        let kenten = Regex::new(r"\[([^]]*?):\.\]").unwrap();
         let sentence = kenten.replace_all(&self.elements, |caps: &Captures| {
             format!(
                 "|{}《{}》",
