@@ -98,6 +98,29 @@ mod tests {
     use super::Sentence;
 
     #[test]
+    fn get() {
+        let source   = "私の[名前:なまえ]は！[田中:.]？太郎!?です";
+        let expected = "私の|名前《なまえ》は！　|田中《・・》？　太郎!?　です";
+        let sentence = Sentence::new(&source);
+        assert_eq!(sentence.get(), expected);
+    }
+    #[test]
+    fn format() {
+        let source   = "私の[名前:なまえ]は！[田中:.]？太郎!?です";
+        let expected = "私の|名前《なまえ》は！　|田中《・・》？　太郎!?　です";
+        let sentence = Sentence::new(&source).format();
+        assert_eq!(sentence.elements, expected);
+    }
+
+    #[test]
+    fn add_space_after_exclamation() {
+        let source = "私の名前は！田中？太郎!?です";
+        let expected = "私の名前は！　田中？　太郎!?　です";
+        let sentence = Sentence::new(&source).add_space_after_exclamation();
+        assert_eq!(sentence.elements, expected);
+    }
+
+    #[test]
     fn convert_ruby_should_convert_ruby() {
         let sut = Sentence::new("私の[名前:なまえ]は[太郎:たろう]です");
         let expected = "私の|名前《なまえ》は|太郎《たろう》です";
