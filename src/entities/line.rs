@@ -20,7 +20,7 @@ impl Line {
     /// ```
     /// use naromat::entities::line::Line;
     /// 
-    /// Line::new("我が輩は猫である。名前はまだない。")
+    /// Line::new("我が輩は猫である。名前はまだない。");
     /// ```
     pub fn new(text : &str) -> Self {
         Self { elements: Self::format(text) }
