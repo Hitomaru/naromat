@@ -4,7 +4,11 @@ use regex::Captures;
 /// Structure of novel sentence.
 /// 
 /// Sentences are defined below:
-/// * End with sentence-terminators ('.', ''))
+/// * Starts from previous sentence or breakline
+/// * End with sentence-terminators ('.', '。', '」'))
+///     * '. '
+///     * '。'
+///     * '」'
 /// 
 pub struct Sentence {
     elements : String,
@@ -53,15 +57,19 @@ impl Sentence {
         self.format().elements.to_string()
     }
 
+    /// Format sentence
     fn format(&self) -> Self {
         self.add_space_after_exclamation().convert_kenten().convert_ruby()
     }
 
+    /// Insert 2 byte whitespace to after of exclamation.
     fn add_space_after_exclamation(&self) -> Self {
         let exclamations = Regex::new(r"(!\?|\?!|[！？])").unwrap();
         let sentence = exclamations.replace_all(&self.elements, "$1　").to_string();
         Self::new(&sentence)
     }
+
+    /// Convert kenten(圏点) format to Narou format.
     fn convert_kenten(&self) -> Self {
         let kenten = Regex::new(r"\[(.*?):\.\]").unwrap();
         let sentence = kenten.replace_all(&self.elements, |caps: &Captures| {
@@ -73,6 +81,8 @@ impl Sentence {
         }).to_string();
         Self::new(&sentence)
     }
+
+    /// Convert ruby(ルビ) format to Narou format
     fn convert_ruby(&self) -> Self {
         let ruby = Regex::new(r"\[(.*?):(.*?)]").unwrap();
         let sentence = ruby.replace_all(&self.elements, "|$1《$2》").to_string();
