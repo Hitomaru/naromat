@@ -58,8 +58,8 @@ impl Chapter {
     /// どこで[生まれた:.]のかとんと[見当:けんとう]がつかぬ。
     /// ");
     /// assert_eq!(chapter.get(), "
-    /// 　我が|輩《・》は|猫《ねこ》である。名前はまだない。
-    /// どこで|生まれた《・・・・》のかとんと|見当≪けんとう≫がつかぬ。");
+    /// 　我が輩は猫である。名前はまだない。
+    /// 　どこで|生まれた《・・・・》のかとんと|見当《けんとう》がつかぬ。");
     /// ```
     pub fn get(self) -> String {
         let text: Vec<String> = self.lines.into_iter().map(|line| line.get()).collect();
