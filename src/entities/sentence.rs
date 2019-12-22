@@ -60,6 +60,21 @@ impl Sentence {
         self.format().elements.to_string()
     }
 
+    /// Generate multiple sentences from a line string
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use naromat::entities::Sentence::sentence;
+    /// let sentences = Sentence::from_line("我が輩は猫である。名前はまだない。どこで生まれたのかとんと見当が付かぬ。");
+    /// ```
+    pub fn from_line(line : &str) -> Vec<Self> {
+        let sentence_terminators = Regex::new(r".*([」。.？！]|!\?|\?!)").unwrap();
+        sentence_terminators.find_iter(line)
+            .map(|sentence| sentence.as_str())
+            .map(|sentence| Self::new(sentence)).collect()
+    }
+
     /// Format sentence
     fn format(&self) -> Self {
         self.add_space_after_exclamation().convert_kenten().convert_ruby()

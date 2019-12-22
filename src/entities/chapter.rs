@@ -24,7 +24,7 @@ impl Chapter {
     /// どこで生まれたのかとんと検討がつかぬ。");
     /// ```
     pub fn new(text : &str) -> Self {
-        Self { lines: text.split_terminator('\n').map(|line| { Line::new(line) }).collect() }
+        Self { lines: Line::from_chapter(text) }
     }
 
     /// Print formatted chapter

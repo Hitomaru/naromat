@@ -59,8 +59,8 @@ impl Line {
     /// Format line
     fn format(text : &str) -> Self {
         let line = Self::add_header_space(text.trim());
-        let line = Self::split(&line).into_iter().map(|sentence| Sentence::new(&sentence)).collect();
-        Self { elements: line }
+        let sentences = Sentence::from_line(&line);
+        Self { elements: sentences }
     }
 
     /// Insert 2 byte whitespace to line head
@@ -69,10 +69,19 @@ impl Line {
         return "　".to_string() + text;
     }
 
-    /// Split line to sentences
-    fn split(text : &str) -> Vec<&str> {
-        let sentence_terminators = Regex::new(r".*([」。.？！]|!\?|\?!)").unwrap();
-        sentence_terminators.find_iter(text).map(|m| m.as_str()).collect()
+    /// Generate multiple lines from multiline string
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use naromat::entities::line::Line;
+    /// let lines = Line::from_chapter("我が輩は猫である。
+    /// 名前はまだない。
+    /// どこで生まれたのかとんと見当が付かぬ。");
+    /// 
+    /// ```
+    pub fn from_chapter(text : &str) -> Vec<Self> {
+        text.split_terminator('\n').map(|line| { Self::new(line) }).collect()
     }
 
     /// Return true if a line is speech line
@@ -94,5 +103,13 @@ mod tests {
         let expected = "　我が|輩《・》は|猫《ねこ》である。どこで生まれたかとんと見当がつかぬ。";
         let line = Line::new(&source);
         assert_eq!(line.get(), expected);
+    }
+
+    #[test]
+    fn from_chapter() {
+        let source = "我が輩は猫である。
+名前はまだない。
+どこで生まれたのかとんと見当が付かぬ。";
+        Line::from_chapter(source);
     }
 }
