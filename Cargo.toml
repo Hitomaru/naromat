@@ -1,8 +1,12 @@
 [package]
 name = "naromat"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["Hitomaru Horino <type10tk@kahi-sv.info>"]
 edition = "2018"
+repository = "https://github.com/Hitomaru/naromat"
+license-file = "LICENSE"
+readme = "README.md"
+description = "Convert text to narou novel format"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
