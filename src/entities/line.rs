@@ -20,10 +20,10 @@ impl Line {
     /// ```
     /// use naromat::entities::line::Line;
     /// 
-    /// Line::new("我が輩は猫である。名前はまだない。")
+    /// Line::new("我が輩は猫である。名前はまだない。");
     /// ```
     pub fn new(text : &str) -> Self {
-        Self { elements: Self::format(text) }
+        Self::format(text)
     }
 
     /// Print formatted line
@@ -34,7 +34,7 @@ impl Line {
     /// use naromat::entities::line::Line;
     /// 
     /// let line = Line::new("我が輩は猫である。名前はまだない。");
-    /// sentence.print()
+    /// line.print()
     /// ```
     pub fn print(self) {
         for element in self.elements {
@@ -42,10 +42,25 @@ impl Line {
         }
     }
 
+    /// Get string of formatted sentence
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use naromat::entities::line::Line;
+    /// let line = Line::new("我が[輩:.]は[猫:ねこ]である。どこで生まれたかとんと見当がつかぬ。");
+    /// assert_eq!(line.get(), "　我が|輩《・》は|猫《ねこ》である。どこで生まれたかとんと見当がつかぬ。");
+    /// ```
+    /// 
+    pub fn get(self) -> String {
+        self.elements.into_iter().map(|sentence| sentence.get()).collect()
+    }
+
     /// Format line
-    fn format(text : &str) -> Vec<Sentence> {
+    fn format(text : &str) -> Self {
         let line = Self::add_header_space(text.trim());
-        Self::split(&line).into_iter().map(|sentence| Sentence::new(sentence)).collect()
+        let line = Self::split(&line).into_iter().map(|sentence| Sentence::new(&sentence)).collect();
+        Self { elements: line }
     }
 
     /// Insert 2 byte whitespace to line head
@@ -56,8 +71,8 @@ impl Line {
 
     /// Split line to sentences
     fn split(text : &str) -> Vec<&str> {
-        let line_terminators = Regex::new(r".*([」。.？！]|!\?|\?!)").unwrap();
-        line_terminators.find_iter(text).map(|m| m.as_str()).collect()
+        let sentence_terminators = Regex::new(r".*([」。.？！]|!\?|\?!)").unwrap();
+        sentence_terminators.find_iter(text).map(|m| m.as_str()).collect()
     }
 
     /// Return true if a line is speech line
@@ -67,5 +82,17 @@ impl Line {
              '「' => true,
              _    => false
          }
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::Line;
+
+    #[test]
+    fn get() {
+        let source   = "我が[輩:.]は[猫:ねこ]である。どこで生まれたかとんと見当がつかぬ。";
+        let expected = "　我が|輩《・》は|猫《ねこ》である。どこで生まれたかとんと見当がつかぬ。";
+        let line = Line::new(&source);
+        assert_eq!(line.get(), expected);
     }
 }
