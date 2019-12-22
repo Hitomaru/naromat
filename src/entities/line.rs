@@ -1,4 +1,5 @@
 use crate::entities::sentence::Sentence;
+use crate::entities::document_element::DocumentElement;
 
 /// Structure of novel line
 /// 
@@ -23,36 +24,6 @@ impl Line {
     /// ```
     pub fn new(text : &str) -> Self {
         Self::format(text)
-    }
-
-    /// Print formatted line
-    /// 
-    /// # Example
-    /// 
-    /// ```
-    /// use naromat::entities::line::Line;
-    /// 
-    /// let line = Line::new("我が輩は猫である。名前はまだない。");
-    /// line.print()
-    /// ```
-    pub fn print(self) {
-        for element in self.elements {
-            element.print();
-        }
-    }
-
-    /// Get string of formatted sentence
-    /// 
-    /// # Example
-    /// 
-    /// ```
-    /// use naromat::entities::line::Line;
-    /// let line = Line::new("我が[輩:.]は[猫:ねこ]である。どこで生まれたかとんと見当がつかぬ。");
-    /// assert_eq!(line.get(), "　我が|輩《・》は|猫《ねこ》である。どこで生まれたかとんと見当がつかぬ。");
-    /// ```
-    /// 
-    pub fn get(self) -> String {
-        self.elements.into_iter().map(|sentence| sentence.get()).collect()
     }
 
     /// Format line
@@ -92,8 +63,43 @@ impl Line {
          }
     }
 }
+
+impl DocumentElement for Line {
+        /// Print formatted line
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use naromat::entities::document_element::DocumentElement;
+    /// use naromat::entities::line::Line;
+    /// 
+    /// let line = Line::new("我が輩は猫である。名前はまだない。");
+    /// line.print()
+    /// ```
+    fn print(self) {
+        for element in self.elements {
+            element.print();
+        }
+    }
+
+    /// Get string of formatted sentence
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use naromat::entities::document_element::DocumentElement;
+    /// use naromat::entities::line::Line;
+    /// let line = Line::new("我が[輩:.]は[猫:ねこ]である。どこで生まれたかとんと見当がつかぬ。");
+    /// assert_eq!(line.get(), "　我が|輩《・》は|猫《ねこ》である。どこで生まれたかとんと見当がつかぬ。");
+    /// ```
+    /// 
+    fn get(self) -> String {
+        self.elements.into_iter().map(|sentence| sentence.get()).collect()
+    }
+}
 #[cfg(test)]
 mod tests {
+    use crate::entities::document_element::DocumentElement;
     use super::Line;
 
     #[test]

@@ -1,4 +1,5 @@
 use crate::entities::line::Line;
+use crate::entities::document_element::DocumentElement;
 
 /// Structure of novel chapter.
 /// 
@@ -17,6 +18,7 @@ impl Chapter {
     /// # Example
     /// 
     /// ```
+    /// 
     /// use naromat::entities::chapter::Chapter;
     /// 
     /// Chapter::new("
@@ -27,11 +29,16 @@ impl Chapter {
         Self { lines: Line::from_chapter(text) }
     }
 
-    /// Print formatted chapter
+
+}
+
+impl DocumentElement for Chapter {
+        /// Print formatted chapter
     /// 
     /// # Example
     /// 
     /// ```
+    /// use naromat::entities::document_element::DocumentElement;
     /// use naromat::entities::chapter::Chapter;
     /// 
     /// let chapter = Chapter::new("
@@ -40,7 +47,7 @@ impl Chapter {
     /// ");
     /// chapter.print()
     /// ```
-    pub fn print(self) {
+    fn print(self) {
         for line in self.lines {
             line.print();
         }
@@ -51,6 +58,7 @@ impl Chapter {
     /// # Example
     /// 
     /// ```
+    /// use naromat::entities::document_element::DocumentElement;
     /// use naromat::entities::chapter::Chapter;
     /// 
     /// let chapter = Chapter::new("
@@ -61,13 +69,15 @@ impl Chapter {
     /// 　我が輩は猫である。名前はまだない。
     /// 　どこで|生まれた《・・・・》のかとんと|見当《けんとう》がつかぬ。");
     /// ```
-    pub fn get(self) -> String {
+    fn get(self) -> String {
         let text: Vec<String> = self.lines.into_iter().map(|line| line.get()).collect();
         text.join("\n")
     }
 }
+
 #[cfg(test)]
 mod tests {
+    use crate::entities::document_element::DocumentElement;
     use super::Chapter;
 
     #[test]

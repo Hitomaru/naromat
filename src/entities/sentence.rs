@@ -1,5 +1,6 @@
 use regex::Regex;
 use regex::Captures;
+use crate::entities::document_element::DocumentElement;
 
 /// Structure of novel sentence.
 /// 
@@ -30,34 +31,6 @@ impl Sentence {
     /// ```
     pub fn new(sentence : &str) -> Self {
         Self { elements: sentence.trim_end().to_string() }
-    }
-
-    /// Print formatted sentence
-    /// 
-    /// # Example
-    /// 
-    /// ```
-    /// use naromat::entities::sentence::Sentence;
-    /// 
-    /// let sentence = Sentence::new("我が輩は猫である。");
-    /// sentence.print()
-    /// ```
-    pub fn print(self) {
-        println!("{}", self.format().elements)
-    }
-
-    /// Get string of formatted sentence
-    /// 
-    /// # Example
-    /// 
-    /// ```
-    /// use naromat::entities::sentence::Sentence;
-    /// let sentence = Sentence::new("我が[輩:.]は[猫:ねこ]である");
-    /// assert_eq!(sentence.get(), "我が|輩《・》は|猫《ねこ》である");
-    /// ```
-    /// 
-    pub fn get(self) -> String {
-        self.format().elements.to_string()
     }
 
     /// Generate multiple sentences from a line string
@@ -108,8 +81,41 @@ impl Sentence {
     }
 }
 
+impl DocumentElement for Sentence {
+        /// Print formatted sentence
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use naromat::entities::document_element::DocumentElement;
+    /// use naromat::entities::sentence::Sentence;
+    /// 
+    /// let sentence = Sentence::new("我が輩は猫である。");
+    /// sentence.print()
+    /// ```
+    fn print(self) {
+        println!("{}", self.format().elements)
+    }
+
+    /// Get string of formatted sentence
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use naromat::entities::document_element::DocumentElement;
+    /// use naromat::entities::sentence::Sentence;
+    /// let sentence = Sentence::new("我が[輩:.]は[猫:ねこ]である");
+    /// assert_eq!(sentence.get(), "我が|輩《・》は|猫《ねこ》である");
+    /// ```
+    /// 
+    fn get(self) -> String {
+        self.format().elements.to_string()
+    }
+}
+
 #[cfg(test)]
 mod tests {
+    use crate::entities::document_element::DocumentElement;
     use super::Sentence;
 
     #[test]
