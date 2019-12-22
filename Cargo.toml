@@ -3,6 +3,7 @@ name = "naromat"
 version = "0.0.1"
 authors = ["Hitomaru Horino <type10tk@kahi-sv.info>"]
 edition = "2018"
+documentation = "https://hitomaru.github.io/naromat/"
 repository = "https://github.com/Hitomaru/naromat"
 license = "MIT"
 license-file = "LICENSE"
