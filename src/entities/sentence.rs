@@ -65,7 +65,7 @@ impl Sentence {
     /// # Example
     /// 
     /// ```
-    /// use naromat::entities::Sentence::sentence;
+    /// use naromat::entities::sentence::Sentence;
     /// let sentences = Sentence::from_line("我が輩は猫である。名前はまだない。どこで生まれたのかとんと見当が付かぬ。");
     /// ```
     pub fn from_line(line : &str) -> Vec<Self> {
