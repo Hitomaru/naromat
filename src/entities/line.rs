@@ -1,5 +1,4 @@
 use crate::entities::sentence::Sentence;
-use regex::Regex;
 
 /// Structure of novel line
 /// 
