@@ -14,7 +14,14 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
     - uses: actions/checkout@master
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
+    - name: Install tarpaulin
+      run: cargo install cargo-tarpaulin
+    - name: Cache tarpaulin
+      use: actions/cache@v1
       with:
-        github-token: ${{ secrets.COVERALL_TOKEN }}
+        path: ~/.cargo/bin/cargo-tarpaulin
+        key: ${{ runner.os }}-naromat-${{ hashFiles(format('{0}{1}', github.workspace, '/.github/workflows/rust.yml')) }}
+        restore-keys:
+          ${{ runner.os }}-naromat-
+    - name: Coveralls
+      run: cargo tarpaulin --coverall ${{ secrets.COVERALL_TOKEN }}
