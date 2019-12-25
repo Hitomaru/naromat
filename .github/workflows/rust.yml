@@ -23,4 +23,4 @@ jobs:
         restore-keys:
           ${{ runner.os }}-naromat-
     - name: Coveralls
-      run: cargo tarpaulin --coverall ${{ secrets.COVERALL_TOKEN }}
+      run: cargo tarpaulin --coveralls ${{ secrets.COVERALLS_TOKEN }}
