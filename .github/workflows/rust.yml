@@ -16,7 +16,7 @@ jobs:
     - name: Install tarpaulin
       run: cargo install cargo-tarpaulin
     - name: Cache tarpaulin
-      use: actions/cache@v1
+      uses: actions/cache@v1
       with:
         path: ~/.cargo/bin/cargo-tarpaulin
         key: ${{ runner.os }}-naromat-${{ hashFiles(format('{0}{1}', github.workspace, '/.github/workflows/rust.yml')) }}
