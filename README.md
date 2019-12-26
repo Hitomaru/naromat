@@ -1,5 +1,7 @@
 # Naromat: Narou format converter
 
+[![Coverage Status](https://coveralls.io/repos/github/Hitomaru/naromat/badge.svg?branch=feature/add-coverage-to-CI)](https://coveralls.io/github/Hitomaru/naromat?branch=feature/add-coverage-to-CI)
+
 ## What's Naromat?
 
 Naromat is a library crate that converts text file from specific typesetting format to Shosetsuka ni Naro(https://syosetu.com/) format.
