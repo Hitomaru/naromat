@@ -31,7 +31,7 @@ jobs:
         restore-keys:
           ${{ runner.os }}-naromat-
     - name: Install tarpaulin
-      if: cargo tarpaulin --version | grep -sqE "cargo-tarpaulin.*"
+      if: steps.cache-tarpaulin.outputs.cache-hit != 'true'
       run: cargo install cargo-tarpaulin
     - name: Coveralls
       run: cargo tarpaulin --coveralls ${{ secrets.COVERALLS_TOKEN }}
