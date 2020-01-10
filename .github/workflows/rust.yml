@@ -30,7 +30,7 @@ jobs:
         path: ${GITHUB_WORKSPACE}/bin
         key: ${{ runner.os }}-naromat
     - name: Install tarpaulin
-      if: steps.cache-tarpaulin.outputs.cache-hit != 'true'
+      if: ! steps.cache-tarpaulin.outputs.cache-hit
       run: cargo install cargo-tarpaulin
       env:
         CARGO_HOME: ${GITHUB_WORKSPACE}/bin
