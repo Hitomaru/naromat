@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
 
-    runs-on: xd009642/tarpaulin-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
