@@ -59,7 +59,7 @@ impl Chapter {
     /// ");
     /// assert_eq!(chapter.get(), "
     /// 　我が輩は猫である。名前はまだない。
-    /// 　どこで|生まれた《・・・・》のかとんと|見当《けんとう》がつかぬ。");
+    /// 　どこで｜生まれた《・・・・》のかとんと｜見当《けんとう》がつかぬ。");
     /// ```
     pub fn get(self) -> String {
         let text: Vec<String> = self.lines.into_iter().map(|line| line.get()).collect();
@@ -75,7 +75,7 @@ mod tests {
         let source   = "我が輩は猫である。名前はまだない。
 どこで[生まれた:.]のかとんと[見当:けんとう]がつかぬ。";
         let expected = "　我が輩は猫である。名前はまだない。
-　どこで|生まれた《・・・・》のかとんと|見当《けんとう》がつかぬ。";
+　どこで｜生まれた《・・・・》のかとんと｜見当《けんとう》がつかぬ。";
         let chapter = Chapter::new(&source);
         assert_eq!(chapter.get(), expected);
     }

@@ -49,7 +49,7 @@ impl Line {
     /// ```
     /// use naromat::entities::line::Line;
     /// let line = Line::new("我が[輩:.]は[猫:ねこ]である。どこで生まれたかとんと見当がつかぬ。");
-    /// assert_eq!(line.get(), "　我が|輩《・》は|猫《ねこ》である。どこで生まれたかとんと見当がつかぬ。");
+    /// assert_eq!(line.get(), "　我が｜輩《・》は｜猫《ねこ》である。どこで生まれたかとんと見当がつかぬ。");
     /// ```
     /// 
     pub fn get(self) -> String {
@@ -71,7 +71,7 @@ impl Line {
 
     /// Split line to sentences
     fn split(text : &str) -> Vec<&str> {
-        let sentence_terminators = Regex::new(r".*([」。.？！]|!\?|\?!)").unwrap();
+        let sentence_terminators = Regex::new(r".*([」。.？！]|!\?|\?!|\z)").unwrap();
         sentence_terminators.find_iter(text).map(|m| m.as_str()).collect()
     }
 
@@ -91,7 +91,15 @@ mod tests {
     #[test]
     fn get() {
         let source   = "我が[輩:.]は[猫:ねこ]である。どこで生まれたかとんと見当がつかぬ。";
-        let expected = "　我が|輩《・》は|猫《ねこ》である。どこで生まれたかとんと見当がつかぬ。";
+        let expected = "　我が｜輩《・》は｜猫《ねこ》である。どこで生まれたかとんと見当がつかぬ。";
+        let line = Line::new(&source);
+        assert_eq!(line.get(), expected);
+    }
+
+    #[test]
+    fn get_min() {
+        let source   = "我";
+        let expected = "　我";
         let line = Line::new(&source);
         assert_eq!(line.get(), expected);
     }
