@@ -36,3 +36,5 @@ jobs:
         CARGO_HOME: /home/runner/work/naromat/naromat/bin
     - name: Coveralls
       run: cargo tarpaulin --coveralls ${{ secrets.COVERALLS_TOKEN }}
+      env:
+        CARGO_HOME: /home/runner/work/naromat/naromat/bin
