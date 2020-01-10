@@ -27,12 +27,12 @@ jobs:
       id: cache-tarpaulin
       uses: actions/cache@v1
       with:
-        path: ${GITHUB_WORKSPACE}/bin
+        path: ./bin
         key: ${{ runner.os }}-naromat
     - name: Install tarpaulin
       if: steps.cache-tarpaulin.outputs.cache-hit == false
       run: cargo install cargo-tarpaulin
       env:
-        CARGO_HOME: ${GITHUB_WORKSPACE}/bin
+        CARGO_HOME: ${{GITHUB_WORKSPACE}}/bin
     - name: Coveralls
       run: cargo tarpaulin --coveralls ${{ secrets.COVERALLS_TOKEN }}
