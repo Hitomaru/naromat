@@ -59,7 +59,7 @@ impl Sentence {
     /// ```
     ///
     pub fn get(self) -> String {
-        self.format().elements.to_string()
+        self.format().elements
     }
 
     /// Format sentence
