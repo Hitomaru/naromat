@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["TextFile","Structure of Novel text file"]]});

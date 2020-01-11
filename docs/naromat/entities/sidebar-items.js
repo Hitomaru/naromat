@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["chapter",""],["line",""],["sentence",""]]});
+initSidebarItems({"mod":[["chapter",""],["file",""],["line",""],["sentence",""]]});
