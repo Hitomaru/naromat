@@ -68,7 +68,7 @@ impl<'file_handling> TextFile {
         };
         match file.flush() {
             Ok(_) => result,
-            Err(cause) => Err(TextFileOutputError::CannotFlush(cause))
+            Err(cause) => Err(TextFileOutputError::CannotFlush(cause)),
         }
     }
 }
