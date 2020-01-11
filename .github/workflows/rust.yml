@@ -55,7 +55,7 @@ jobs:
     - uses: actions-rs/cargo@v1
       with:
         command: install
-        args: tarpaulin
+        args: cargo-tarpaulin
     - name: Coveralls
       run: cargo tarpaulin --coveralls ${{ secrets.COVERALLS_TOKEN }}
       env:
