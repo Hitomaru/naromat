@@ -62,13 +62,13 @@ impl<'file_handling> TextFile {
     }
 
     fn save_file(self, mut file: File) -> Result<(), TextFileOutputError<'file_handling>> {
-        let result = match write!(file, "{}\n", self.chapter.get()) {
+        let result = match writeln!(file, "{}", self.chapter.get()) {
             Ok(_) => Ok(()),
             Err(cause) => return Err(TextFileOutputError::CannotWrite(cause)),
         };
         match file.flush() {
             Ok(_) => result,
-            Err(cause) => return Err(TextFileOutputError::CannotFlush(cause)),
+            Err(cause) => Err(TextFileOutputError::CannotFlush(cause))
         }
     }
 }
@@ -85,10 +85,10 @@ mod tests {
         let source_file_path = "./resources/test/entities/file/source.txt";
         let reference_file_path = "./resources/test/entities/file/reference.txt";
         let target_file_path = "./resources/test/entities/file/target.txt";
-        let target_file = TextFile::new(source_file_path).unwrap();
+        let source_file = TextFile::new(source_file_path).unwrap();
 
         // when
-        target_file.format_and_save(target_file_path).unwrap();
+        source_file.format_and_save(target_file_path).unwrap();
 
         // then
         let is_target_text_is_same_to_reference = diff(target_file_path, reference_file_path);
@@ -103,10 +103,10 @@ mod tests {
         // given
         let source_file_path = "./resources/test/entities/file/source.txt";
         let target_file_path = "./resources/test/entities/file/target.txt";
-        let target_file = TextFile::new(source_file_path).unwrap();
+        let source_file = TextFile::new(source_file_path).unwrap();
 
         // expect
-        let is_return_error = target_file.format_and_save(target_file_path).is_err();
+        let is_return_error = source_file.format_and_save(target_file_path).is_err();
         let is_target_file_not_modified = fs::metadata(target_file_path).unwrap().len() == 0;
 
         // assert

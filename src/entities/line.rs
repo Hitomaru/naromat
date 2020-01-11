@@ -70,7 +70,7 @@ impl Line {
         if Self::is_speech(text) {
             return " ".to_string() + text;
         }
-        return "　".to_string() + text;
+        "　".to_string() + text
     }
 
     /// Split line to sentences
