@@ -77,21 +77,25 @@ impl<'file_handling> TextFile {
 mod tests {
     use super::TextFile;
     use file_diff::diff;
-    use std::fs;
+    use std::{fs, time};
 
     #[test]
     fn can_save_formatted_text() {
         // given
         let source_file_path = "./resources/test/entities/file/source.txt";
         let reference_file_path = "./resources/test/entities/file/reference.txt";
-        let target_file_path = "./resources/test/entities/file/target.txt";
+        let now = time::Instant::now();
+        let target_file_path = format!(
+            "./resources/test/entities/file/target-{}.txt",
+            now.elapsed().as_millis()
+        );
         let source_file = TextFile::new(source_file_path).unwrap();
 
         // when
-        source_file.format_and_save(target_file_path).unwrap();
+        source_file.format_and_save(target_file_path.as_str()).unwrap();
 
         // then
-        let is_target_text_is_same_to_reference = diff(target_file_path, reference_file_path);
+        let is_target_text_is_same_to_reference = diff(target_file_path.as_str(), reference_file_path);
         // teardown
         fs::remove_file(target_file_path).unwrap();
         // assert
@@ -102,7 +106,7 @@ mod tests {
     fn return_error_when_target_file_already_exists() {
         // given
         let source_file_path = "./resources/test/entities/file/source.txt";
-        let target_file_path = "./resources/test/entities/file/target.txt";
+        let target_file_path = "./resources/test/entities/file/already_exists.txt";
         let source_file = TextFile::new(source_file_path).unwrap();
 
         // expect
