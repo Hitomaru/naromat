@@ -27,9 +27,7 @@ impl TextFile {
     /// ```
     pub fn new(path_from : &str) -> Result<Self, Box<dyn std::error::Error + 'static>> {
         let text = fs::read_to_string(path_from)?;
-        Ok(Self {
-            chapter: Chapter::new(text.as_str())
-        })
+        Ok(Self { chapter: Chapter::new(text.as_str()) })
     }
 
     /// Format file text and save
@@ -48,12 +46,12 @@ impl TextFile {
     /// ```
     pub fn format_and_save(self, path_to : &str) -> bool {
         let mut file = match File::create(path_to) {
-            Ok(f) => f,
-            Err(_) => return false
+            Ok(f)   => f,
+            Err(_)  => return false
         };
         let result = match write!(file, "{}\n", self.chapter.get()) {
-            Ok(_) => true,
-            Err(_) => false, 
+            Ok(_)   => true,
+            Err(_)  => false, 
         };
         file.flush().unwrap();
         result
