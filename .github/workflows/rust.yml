@@ -23,14 +23,9 @@ jobs:
       run: cargo build --verbose
     - name: Run tests
       run: cargo test --verbose
-    - name: Cache tarpaulin
-      id: cache-tarpaulin
-      uses: actions/cache@v1
-      with:
-        path: ~/.cargo/bin/
-        key: ${{ runner.os }}-naromat-${{ hashFiles(format('{0}{1}', github.workspace, '/.github/workflows/rust.yml')) }}
     - name: Install tarpaulin
-      if: steps.cache-tarpaulin.outputs.cache-hit != 'true'
       run: cargo install cargo-tarpaulin
     - name: Coveralls
       run: cargo tarpaulin --coveralls ${{ secrets.COVERALLS_TOKEN }}
+      env:
+        CARGO_HOME: /home/runner/work/naromat/naromat/bin
