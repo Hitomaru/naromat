@@ -5,7 +5,6 @@ use std::io::{ Write };
 
 /// Structure of Novel text file
 pub struct TextFile {
-    path_to : String,
     chapter : Chapter,
 }
 
@@ -13,18 +12,22 @@ pub struct TextFile {
 impl TextFile {
 
     /// Constructor
+    ///
+    /// # Fail
     /// 
+    /// * Path format is invalid
+    /// * A file designated by a path is not exists
+    ///  
     /// # Example
     /// 
     /// ```no_run
     /// use naromat::entities::file::TextFile;
     /// 
-    /// TextFile::new("./path/to/source/file","./path/to/save");
+    /// TextFile::new("./path/to/source/file");
     /// ```
-    pub fn new(path_from : &str, path_to : &str) -> Result<Self, Box<dyn std::error::Error + 'static>> {
+    pub fn new(path_from : &str) -> Result<Self, Box<dyn std::error::Error + 'static>> {
         let text = fs::read_to_string(path_from)?;
         Ok(Self {
-            path_to: path_to.to_string(),
             chapter: Chapter::new(text.as_str())
         })
     }
@@ -40,11 +43,11 @@ impl TextFile {
     /// ```no_run
     /// use naromat::entities::file::TextFile;
     /// 
-    /// let text = TextFile::new("./path/to/source/file","./path/to/save").unwrap();
-    /// text.format_and_save();
+    /// let text = TextFile::new("./path/to/source/file").unwrap();
+    /// text.format_and_save("./path/to/save");
     /// ```
-    pub fn format_and_save(self) -> bool {
-        let mut file = match File::create(self.path_to) {
+    pub fn format_and_save(self, path_to : &str) -> bool {
+        let mut file = match File::create(path_to) {
             Ok(f) => f,
             Err(_) => return false
         };
@@ -69,10 +72,11 @@ mod tests {
         let source_file_path = "./resources/test/entities/file/source.txt";
         let reference_file_path = "./resources/test/entities/file/reference.txt";
         let target_file_path = "./resources/test/entities/file/target.txt";
+        let target_file = TextFile::new(source_file_path).unwrap();
 
+        
         // when
-        let target_file = TextFile::new(source_file_path, target_file_path).unwrap();
-        target_file.format_and_save();
+        target_file.format_and_save(target_file_path);
 
         // then
         let is_target_text_is_same_to_reference = diff(target_file_path, reference_file_path);
