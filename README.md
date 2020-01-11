@@ -23,6 +23,12 @@ let formatted_string = chapter.get();
 assert_eq!(formatted_string, "
 　我が輩は猫である。名前はまだない。
 　どこで｜生まれた《・・・・》のかとんと｜見当《けんとう》がつかぬ。");
+
+use naromat::entities::file::TextFile;
+
+let text = TextFile::new("./path/to/source/file").unwrap();
+text.format_and_save("./path/to/save.txt");
+
 ```
 
 ## Contributing

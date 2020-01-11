@@ -23,7 +23,7 @@ impl TextFile {
     /// ```no_run
     /// use naromat::entities::file::TextFile;
     /// 
-    /// TextFile::new("./path/to/source/file");
+    /// TextFile::new("./path/to/source/file.txt").unwrap();
     /// ```
     pub fn new(path_from : &str) -> Result<Self, Box<dyn std::error::Error + 'static>> {
         let text = fs::read_to_string(path_from)?;
@@ -41,8 +41,8 @@ impl TextFile {
     /// ```no_run
     /// use naromat::entities::file::TextFile;
     /// 
-    /// let text = TextFile::new("./path/to/source/file").unwrap();
-    /// text.format_and_save("./path/to/save");
+    /// let text = TextFile::new("./path/to/source/file.txt").unwrap();
+    /// text.format_and_save("./path/to/save.txt");
     /// ```
     pub fn format_and_save(self, path_to : &str) -> bool {
         let mut file = match File::create(path_to) {
