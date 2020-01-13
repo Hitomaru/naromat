@@ -1,3 +1,4 @@
+#[macro_use]
 extern crate clap;
 
 use clap::{App, Arg};
@@ -6,29 +7,26 @@ use naromat::errors::*;
 use std::path::Path;
 
 fn main() {
-    let app = App::new("naromat")
-        .version("0.2.0")
-        .author("Hitomaru Horino <type10tk@kahi-sv.info>")
-        .about("Text file formatter for Syosetsuka ni naro")
+    let app = app_from_crate!()
         .arg(Arg::with_name("source").help("source text file path").required(true))
         .arg(
-            Arg::with_name("target")
-                .help("file path to save")
-                .short("t")
-                .long("target")
+            Arg::with_name("dest")
+                .help("file/dir path to save")
+                .short("d")
+                .long("dest")
                 .takes_value(true),
         );
     let matches = app.get_matches();
     let source = matches.value_of("source").unwrap_or("./");
     let source = Path::new(source);
-    let target = matches.value_of("target").unwrap_or("./");
+    let dest = matches.value_of("dest").unwrap_or("./");
     if source.is_file() {
-        match process_file(source, target) {
+        match process_file(source, dest) {
             Ok(_) => 0,
             Err(_) => 1,
         };
     } else {
-        match process_dir(source, target) {
+        match process_dir(source, dest) {
             Ok(_) => 0,
             Err(_) => 1,
         };
