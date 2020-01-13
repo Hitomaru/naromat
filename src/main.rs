@@ -61,7 +61,7 @@ fn process_file<'file_process>(
     }
 }
 
-fn stringify_path<'file_process>(path: &Path) -> Result<&str, InvalidPathError> {
+fn stringify_path(path: &Path) -> Result<&str, InvalidPathError> {
     match path.to_str() {
         Some(string) => Ok(string),
         None => Err(InvalidPathError::FileNotFound(path)),
@@ -85,4 +85,53 @@ fn process_dir(source: &Path, target: &str) -> Result<(), Box<dyn std::error::Er
         }
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs::*;
+
+    #[test]
+    fn can_process_recursively() {
+        // given
+        let source_dir = "./resources/test/main/can_process_recursively";
+        let target_dir = "./resource/test/main/temp";
+        let target_dir_path = Path::new(target_dir);
+        let source_dir_path = Path::new(source_dir);
+        let source_file_count = source_dir_path.ancestors().count();
+
+        // when
+        process_dir(source_dir_path, target_dir).unwrap();
+
+        // then
+        let target_file_count = target_dir_path.ancestors().count();
+
+        // teardown
+        remove_dir_all(target_dir).unwrap();
+
+        // assert
+        assert_eq!(target_file_count, source_file_count)
+    }
+
+    #[test]
+    fn can_process_a_file() {
+        // given
+        let source_file = "./resources/test/main/can_process_a_file/source.txt";
+        let target_file = "./resources/test/main/can_process_a_file/temp.txt";
+        let target_file_path = Path::new(target_file);
+        let source_file_path = Path::new(source_file);
+
+        // when
+        process_file(source_file_path, target_file).unwrap();
+
+        // then
+        let is_processed_file_exists = target_file_path.exists();
+
+        // teardown
+        remove_file(target_file_path).unwrap();
+
+        // assert
+        assert!(is_processed_file_exists)
+    }
 }
