@@ -39,22 +39,23 @@ fn process_file<'file_process>(
     source: &Path,
     target: &'file_process str,
 ) -> Result<(), FileProcessError<'file_process>> {
+    print!("{} : processing", source.display());
     match TextFile::new(stringify_path(source).unwrap()) {
         Ok(file) => {
-            println!("file {} loaded", source.display());
+            print!("...loaded");
             match file.format_and_save(target) {
                 Ok(_) => {
-                    println!("the file '{}' successfuly saved", target);
+                    println!("..successfuly saved to {}", target);
                     Ok(())
                 }
                 Err(err) => {
-                    println!("the file '{}' cannot be saved: {}", target, err);
+                    println!("cannot be saved: {}", err);
                     Err(FileProcessError::SaveError(err))
                 }
             }
         }
         Err(err) => {
-            println!("the file '{}' cannot be loaded: {}", source.display(), err);
+            println!("cannot be loaded: {}", err);
             Err(FileProcessError::LoadError(err))
         }
     }
@@ -68,6 +69,7 @@ fn stringify_path<'file_process>(path: &Path) -> Result<&str, InvalidPathError> 
 }
 
 fn process_dir(source: &Path, target: &str) -> Result<(), Box<dyn std::error::Error + 'static>> {
+    println!("{} : processing", source.display());
     for entry in source.read_dir()? {
         let entry = entry?;
         let path = entry.path();
@@ -76,11 +78,10 @@ fn process_dir(source: &Path, target: &str) -> Result<(), Box<dyn std::error::Er
         } else {
             let parent_dir = path.parent().unwrap().to_str().unwrap();
             let file_name = path.file_name().unwrap().to_str().expect("File name cannot be parsed");
-            let file_path = stringify_path(&path).expect("File path cannot be parsed");
             let target_dir = format!("{}/{}", target, parent_dir);
             std::fs::create_dir_all(&target_dir)?;
             let file_name = format!("{}/{}", target_dir, file_name);
-            TextFile::new(file_path)?.format_and_save(file_name.as_str()).unwrap();
+            process_file(&path, file_name.as_str()).unwrap();
         }
     }
     Ok(())
