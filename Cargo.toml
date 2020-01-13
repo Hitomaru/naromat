@@ -1,6 +1,6 @@
 [package]
 name = "naromat"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Hitomaru Horino <type10tk@kahi-sv.info>"]
 edition = "2018"
 documentation = "https://hitomaru.github.io/naromat/"
