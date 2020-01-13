@@ -66,6 +66,7 @@ fn stringify_path<'file_process>(path: &Path) -> Result<&str, InvalidPathError> 
         None => Err(InvalidPathError::FileNotFound(path)),
     }
 }
+
 fn process_dir(source: &Path, target: &str) -> Result<(), Box<dyn std::error::Error + 'static>> {
     for entry in source.read_dir()? {
         let entry = entry?;
@@ -76,8 +77,10 @@ fn process_dir(source: &Path, target: &str) -> Result<(), Box<dyn std::error::Er
             let parent_dir = path.parent().unwrap().to_str().unwrap();
             let file_name = path.file_name().unwrap().to_str().expect("File name cannot be parsed");
             let file_path = stringify_path(&path).expect("File path cannot be parsed");
-            let file_name = format!("{}/formatted_{}", parent_dir, file_name);
-            TextFile::new(file_path)?.format_and_save(file_name.as_str()).unwrap()
+            let target_dir = format!("{}/{}", target, parent_dir);
+            std::fs::create_dir_all(&target_dir)?;
+            let file_name = format!("{}/{}", target_dir, file_name);
+            TextFile::new(file_path)?.format_and_save(file_name.as_str()).unwrap();
         }
     }
     Ok(())
