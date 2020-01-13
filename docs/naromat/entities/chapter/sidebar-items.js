@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Chapter","Structure of novel chapter."]]});

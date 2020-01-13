@@ -1,10 +1,19 @@
 # Naromat: Narou format converter
 
+[![Coverage Status](https://coveralls.io/repos/github/Hitomaru/naromat/badge.svg?branch=feature/master)](https://coveralls.io/github/Hitomaru/naromat?branch=feature/add-coverage-to-CI)
+
 ## What's Naromat?
 
 Naromat is a library crate that converts text file from specific typesetting format to Shosetsuka ni Naro(https://syosetu.com/) format.
 
 ## Getting started
+
+### As a tool
+
+1. `cargo install naromat`
+2. `naromat -h`
+
+### As a library
 
 1. Add Naromat to your cargo.toml
 2. Use like this:
@@ -20,7 +29,13 @@ let chapter = Chapter::new("
 let formatted_string = chapter.get();
 assert_eq!(formatted_string, "
 　我が輩は猫である。名前はまだない。
-　どこで|生まれた《・・・・》のかとんと|見当《けんとう》がつかぬ。");
+　どこで｜生まれた《・・・・》のかとんと｜見当《けんとう》がつかぬ。");
+
+use naromat::entities::file::TextFile;
+
+let text = TextFile::new("./path/to/source/file").unwrap();
+text.format_and_save("./path/to/save.txt");
+
 ```
 
 ## Contributing
