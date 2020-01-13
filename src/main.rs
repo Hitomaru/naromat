@@ -48,7 +48,7 @@ fn process_file<'file_process>(
 ) -> Result<(), FileProcessError<'file_process>> {
     if source.extension().unwrap() != ext {
         println!("{} : extension is not a target({})", source.display(), ext);
-        return Ok(())
+        return Ok(());
     }
     print!("{} : processing", source.display());
     match TextFile::new(stringify_path(source).unwrap()) {

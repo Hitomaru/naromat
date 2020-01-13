@@ -1,6 +1,6 @@
 # Naromat: Narou format converter
 
-[![Coverage Status](https://coveralls.io/repos/github/Hitomaru/naromat/badge.svg?branch=feature/master)](https://coveralls.io/github/Hitomaru/naromat?branch=feature/add-coverage-to-CI)
+[![Coverage Status](https://coveralls.io/repos/github/Hitomaru/naromat/badge.svg?branch=master)](https://coveralls.io/github/Hitomaru/naromat?branch=master)
 
 ## What's Naromat?
 
