@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["entities",""]]});
+initSidebarItems({"mod":[["entities",""],["errors",""]]});
