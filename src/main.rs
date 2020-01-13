@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate clap;
 
-use clap::{App, Arg};
+use clap::Arg;
 use naromat::entities::text_file::TextFile;
 use naromat::errors::*;
 use std::path::Path;
