@@ -49,22 +49,22 @@ impl Chapter {
         }
     }
 
-    /// Get string of formatted sentence
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// use naromat::entities::chapter::Chapter;
-    ///
-    /// let chapter = Chapter::new("
-    /// 我が輩は猫である。名前はまだない。
-    /// どこで[生まれた:.]のかとんと[見当:けんとう]がつかぬ。
-    /// // コメント行
-    /// ");
-    /// assert_eq!(chapter.get(), "
-    /// 　我が輩は猫である。名前はまだない。
-    /// 　どこで｜生まれた《・・・・》のかとんと｜見当《けんとう》がつかぬ。");
-    /// ```
+    /**
+    Get string of formatted sentence
+    # Example
+    ```
+    use naromat::entities::chapter::Chapter;
+    let chapter = Chapter::new("
+    我が輩は猫である。名前はまだない。
+    // コメント行
+      // ネストされたコメント行
+    どこで[生まれた:.]のかとんと[見当:けんとう]がつかぬ。
+    ");
+    assert_eq!(chapter.get(), "
+    　我が輩は猫である。名前はまだない。
+    　どこで｜生まれた《・・・・》のかとんと｜見当《けんとう》がつかぬ。");
+    ```
+    */
     pub fn get(self) -> String {
         let text: Vec<String> = self.lines.into_iter().map(|line| line.get()).collect();
         text.join("\n")
