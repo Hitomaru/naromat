@@ -89,7 +89,7 @@ impl Sentence {
 
     /// Convert ruby(ルビ) format to Narou format
     fn convert_ruby(&self) -> Self {
-        let ruby = Regex::new(r"\[(.*?):(.*?)]").unwrap();
+        let ruby = Regex::new(r"\[(.*?):(.*?)\]").unwrap();
         let sentence = ruby.replace_all(&self.elements, "｜$1《$2》").to_string();
         Self::new(&sentence)
     }
@@ -143,6 +143,13 @@ mod tests {
     fn convert_ruby_should_convert_ruby() {
         let sut = Sentence::new("私の[名前:なまえ]は[太郎:たろう]です");
         let expected = "私の｜名前《なまえ》は｜太郎《たろう》です";
+        assert_eq!(sut.convert_ruby().elements, expected);
+    }
+
+    #[test]
+    fn convert_ruby_should_convert_rubya() {
+        let sut = Sentence::new("私の[名前:なまえは[太郎:たろうです");
+        let expected = "私の[名前:なまえは[太郎:たろうです";
         assert_eq!(sut.convert_ruby().elements, expected);
     }
 
