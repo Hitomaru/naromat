@@ -81,11 +81,13 @@ impl Line {
 
     /// Return true if a line is speech line
     fn is_speech(text: &str) -> bool {
-        let line_head = text.chars().nth(0).unwrap_or(' ');
-        match line_head {
-            '「' => true,
-            _ => false,
-        }
+        let line_head = text.chars().next().unwrap_or(' ');
+        matches!(line_head, '「')
+    }
+
+    pub fn is_comment(text: &str) -> bool {
+        let line_head: String = text.trim().chars().take(2).collect();
+        line_head == "//"
     }
 }
 #[cfg(test)]
@@ -106,5 +108,35 @@ mod tests {
         let expected = "　我";
         let line = Line::new(&source);
         assert_eq!(line.get(), expected);
+    }
+
+    #[test]
+    fn is_comment_should_return_false_when_body_string() {
+        assert!(!Line::is_comment("吾輩は猫である"));
+    }
+
+    #[test]
+    fn is_comment_should_return_true_when_comment_string() {
+        assert!(Line::is_comment("// 吾輩は猫である"));
+    }
+
+    #[test]
+    fn is_comment_should_return_true_when_half_spaced_comment_string() {
+        assert!(Line::is_comment(" // 吾輩は猫である"));
+    }
+
+    #[test]
+    fn is_comment_should_return_true_when_full_spaced_comment_string() {
+        assert!(Line::is_comment("　// 吾輩は猫である"));
+    }
+
+    #[test]
+    fn is_comment_should_return_true_when_multi_half_spaced_comment_string() {
+        assert!(Line::is_comment("  // 吾輩は猫である"));
+    }
+
+    #[test]
+    fn is_comment_should_return_true_when_multi_full_spaced_comment_string() {
+        assert!(Line::is_comment("　　// 吾輩は猫である"));
     }
 }

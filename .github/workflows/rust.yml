@@ -57,7 +57,7 @@ jobs:
         command: install
         args: cargo-tarpaulin
     - name: Coveralls
-      run: cargo tarpaulin --coveralls ${{ secrets.COVERALLS_TOKEN }}
+      run: cargo tarpaulin --coveralls ${{ secrets.COVERALLS_TOKEN }} --exclude-files ./bin/*
       env:
         CARGO_HOME: /home/runner/work/naromat/naromat/bin
   fmt:

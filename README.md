@@ -1,6 +1,6 @@
 # Naromat: Narou format converter
 
-[![Coverage Status](https://coveralls.io/repos/github/Hitomaru/naromat/badge.svg?branch=feature/master)](https://coveralls.io/github/Hitomaru/naromat?branch=feature/add-coverage-to-CI)
+[![Coverage Status](https://coveralls.io/repos/github/Hitomaru/naromat/badge.svg?branch=master)](https://coveralls.io/github/Hitomaru/naromat?branch=master)
 
 ## What's Naromat?
 
@@ -22,8 +22,9 @@ Naromat is a library crate that converts text file from specific typesetting for
 use naromat::entities::chapter::Chapter;
 
 let chapter = Chapter::new("
-我が輩は猫である。名前はまだない。
+我が輩は猫[#犬も検討する]である。名前はまだない。
 どこで[生まれた:.]のかとんと[見当:けんとう]がつかぬ。
+// コメント行
 ");
 
 let formatted_string = chapter.get();
