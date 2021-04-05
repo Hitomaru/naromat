@@ -12,20 +12,23 @@ pub struct Chapter {
 
 /// Implementation for novel chapter structure
 impl Chapter {
-    /// Constructor
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// use naromat::entities::chapter::Chapter;
-    ///
-    /// Chapter::new("
-    /// 我が輩は猫である。名前はまだない。
-    /// どこで生まれたのかとんと検討がつかぬ。");
-    /// ```
+    /**
+    Constructor
+    # Example
+    ```
+    use naromat::entities::chapter::Chapter;
+    Chapter::new("
+    我が輩は猫である。名前はまだない。
+    どこで生まれたのかとんと検討がつかぬ。");
+    ```
+    */
     pub fn new(text: &str) -> Self {
         Self {
-            lines: text.split_terminator('\n').map(|line| Line::new(line)).collect(),
+            lines: text
+                .split_terminator('\n')
+                .filter(|text| !Line::is_comment(text))
+                .map(|line| Line::new(line))
+                .collect(),
         }
     }
 
@@ -48,21 +51,20 @@ impl Chapter {
         }
     }
 
-    /// Get string of formatted sentence
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// use naromat::entities::chapter::Chapter;
-    ///
-    /// let chapter = Chapter::new("
-    /// 我が輩は猫である。名前はまだない。
-    /// どこで[生まれた:.]のかとんと[見当:けんとう]がつかぬ。
-    /// ");
-    /// assert_eq!(chapter.get(), "
-    /// 　我が輩は猫である。名前はまだない。
-    /// 　どこで｜生まれた《・・・・》のかとんと｜見当《けんとう》がつかぬ。");
-    /// ```
+    /**
+    Get string of formatted sentence
+    # Example
+    ```
+    use naromat::entities::chapter::Chapter;
+    let chapter = Chapter::new("
+    我が輩は猫である。名前はまだない。
+    // コメント行
+      // ネストされたコメント行
+    どこで[生まれた:.]のかとんと[見当:けんとう]がつかぬ。
+    ");
+    assert_eq!(chapter.get(), "\n　我が輩は猫である。名前はまだない。\n　どこで｜生まれた《・・・・》のかとんと｜見当《けんとう》がつかぬ。");
+    ```
+    */
     pub fn get(self) -> String {
         let text: Vec<String> = self.lines.into_iter().map(|line| line.get()).collect();
         text.join("\n")
@@ -75,7 +77,8 @@ mod tests {
     #[test]
     fn get() {
         let source = "我が輩は猫である。名前はまだない。
-どこで[生まれた:.]のかとんと[見当:けんとう]がつかぬ。";
+どこで[生まれた:.]のかとんと[見当:けんとう]がつかぬ。
+// コメント行";
         let expected = "　我が輩は猫である。名前はまだない。
 　どこで｜生まれた《・・・・》のかとんと｜見当《けんとう》がつかぬ。";
         let chapter = Chapter::new(&source);
