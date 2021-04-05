@@ -150,7 +150,7 @@ mod tests {
     }
 
     #[test]
-    fn convert_ruby_should_convert_rubya() {
+    fn convert_ruby_should_not_convert_broken_syntax_ruby() {
         let sut = Sentence::new("私の[名前:なまえは[太郎:たろうです");
         let expected = "私の[名前:なまえは[太郎:たろうです";
         assert_eq!(sut.convert_ruby().elements, expected);
