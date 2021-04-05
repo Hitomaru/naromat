@@ -1,11 +1,11 @@
 [package]
 name = "naromat"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["Hitomaru Horino <type10tk@kahi-sv.info>"]
 edition = "2018"
 documentation = "https://hitomaru.github.io/naromat/"
 repository = "https://github.com/Hitomaru/naromat"
-license-file = "LICENSE"
+license = "MIT"
 readme = "README.md"
 description = "Convert text to narou novel format"
 
