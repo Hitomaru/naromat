@@ -81,11 +81,8 @@ impl Line {
 
     /// Return true if a line is speech line
     fn is_speech(text: &str) -> bool {
-        let line_head = text.chars().nth(0).unwrap_or(' ');
-        match line_head {
-            '「' => true,
-            _ => false,
-        }
+        let line_head = text.chars().next().unwrap_or(' ');
+        matches!(line_head, '「')
     }
 
     pub fn is_comment(text: &str) -> bool {
