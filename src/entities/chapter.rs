@@ -24,9 +24,11 @@ impl Chapter {
     */
     pub fn new(text: &str) -> Self {
         Self {
-            lines: text.split_terminator('\n')
-                .filter(|text| ! Line::is_comment(text))
-                .map(|line| Line::new(line)).collect(),
+            lines: text
+                .split_terminator('\n')
+                .filter(|text| !Line::is_comment(text))
+                .map(|line| Line::new(line))
+                .collect(),
         }
     }
 
@@ -60,9 +62,7 @@ impl Chapter {
       // ネストされたコメント行
     どこで[生まれた:.]のかとんと[見当:けんとう]がつかぬ。
     ");
-    assert_eq!(chapter.get(), "
-    　我が輩は猫である。名前はまだない。
-    　どこで｜生まれた《・・・・》のかとんと｜見当《けんとう》がつかぬ。");
+    assert_eq!(chapter.get(), "　我が輩は猫である。名前はまだない。\n　どこで｜生まれた《・・・・》のかとんと｜見当《けんとう》がつかぬ。");
     ```
     */
     pub fn get(self) -> String {

@@ -64,7 +64,10 @@ impl Sentence {
 
     /// Format sentence
     fn format(&self) -> Self {
-        self.add_space_after_exclamation().convert_kenten().convert_ruby().drop_comment()
+        self.add_space_after_exclamation()
+            .convert_kenten()
+            .convert_ruby()
+            .drop_comment()
     }
 
     /// Insert 2 byte whitespace to after of exclamation.

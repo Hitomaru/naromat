@@ -91,7 +91,7 @@ impl Line {
     pub fn is_comment(text: &str) -> bool {
         let line_head: String = text.trim().chars().take(2).collect();
         line_head == "//"
-}
+    }
 }
 #[cfg(test)]
 mod tests {
@@ -115,7 +115,7 @@ mod tests {
 
     #[test]
     fn is_comment_should_return_false_when_body_string() {
-        assert!(! Line::is_comment("吾輩は猫である"));
+        assert!(!Line::is_comment("吾輩は猫である"));
     }
 
     #[test]
