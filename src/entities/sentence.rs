@@ -64,7 +64,7 @@ impl Sentence {
 
     /// Format sentence
     fn format(&self) -> Self {
-        self.add_space_after_exclamation().convert_kenten().convert_ruby()
+        self.add_space_after_exclamation().convert_kenten().convert_ruby().drop_comment()
     }
 
     /// Insert 2 byte whitespace to after of exclamation.
@@ -92,6 +92,15 @@ impl Sentence {
         let ruby = Regex::new(r"\[(.*?):(.*?)]").unwrap();
         let sentence = ruby.replace_all(&self.elements, "｜$1《$2》").to_string();
         Self::new(&sentence)
+    }
+
+    /**
+    Drop comment block from this sentence.
+    */
+    fn drop_comment(&self) -> Self {
+        let comment = Regex::new(r"\[#.*\]").unwrap();
+        let sentence = comment.replace(self.elements.as_str(), "").to_string();
+        Sentence::new(sentence.as_str())
     }
 }
 
@@ -142,5 +151,17 @@ mod tests {
         let sut = Sentence::new("私の[名前:.]は[たろう:.]です");
         let expected = "私の｜名前《・・》は｜たろう《・・・》です";
         assert_eq!(sut.convert_kenten().elements, expected);
+    }
+
+    #[test]
+    fn drop_comment_should_drop_comment() {
+        let sentence = Sentence::new("我が輩は猫[#犬にするか要検討]である").drop_comment();
+        assert_eq!(sentence.drop_comment().elements, "我が輩は猫である")
+    }
+
+    #[test]
+    fn drop_comment_should_drop_empty_comment() {
+        let sentence = Sentence::new("我が輩は犬[#]である").drop_comment();
+        assert_eq!(sentence.drop_comment().elements, "我が輩は犬である")
     }
 }
