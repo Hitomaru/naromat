@@ -115,14 +115,14 @@ mod tests {
     fn get() {
         let source = "私の[名前:なまえ]は！[田中:.]？太郎!?です";
         let expected = "私の｜名前《なまえ》は！　｜田中《・・》？　太郎!?　です";
-        let sentence = Sentence::new(&source);
+        let sentence = Sentence::new(source);
         assert_eq!(sentence.get(), expected);
     }
     #[test]
     fn format() {
         let source = "私の[名前:なまえ]は！[田中:.]？太郎!?です";
         let expected = "私の｜名前《なまえ》は！　｜田中《・・》？　太郎!?　です";
-        let sentence = Sentence::new(&source).format();
+        let sentence = Sentence::new(source).format();
         assert_eq!(sentence.elements, expected);
     }
 
@@ -130,7 +130,7 @@ mod tests {
     fn format_min() {
         let source = "私";
         let expected = "私";
-        let sentence = Sentence::new(&source).format();
+        let sentence = Sentence::new(source).format();
         assert_eq!(sentence.elements, expected);
     }
 
@@ -138,7 +138,7 @@ mod tests {
     fn add_space_after_exclamation() {
         let source = "私の名前は！田中？太郎!?です";
         let expected = "私の名前は！　田中？　太郎!?　です";
-        let sentence = Sentence::new(&source).add_space_after_exclamation();
+        let sentence = Sentence::new(source).add_space_after_exclamation();
         assert_eq!(sentence.elements, expected);
     }
 

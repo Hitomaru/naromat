@@ -60,7 +60,7 @@ impl Line {
         let line = Self::add_header_space(text.trim());
         let line = Self::split(&line)
             .into_iter()
-            .map(|sentence| Sentence::new(&sentence))
+            .map(|sentence| Sentence::new(sentence))
             .collect();
         Self { elements: line }
     }
@@ -98,7 +98,7 @@ mod tests {
     fn get() {
         let source = "我が[輩:.]は[猫:ねこ]である。どこで生まれたかとんと見当がつかぬ。";
         let expected = "　我が｜輩《・》は｜猫《ねこ》である。どこで生まれたかとんと見当がつかぬ。";
-        let line = Line::new(&source);
+        let line = Line::new(source);
         assert_eq!(line.get(), expected);
     }
 
@@ -106,7 +106,7 @@ mod tests {
     fn get_min() {
         let source = "我";
         let expected = "　我";
-        let line = Line::new(&source);
+        let line = Line::new(source);
         assert_eq!(line.get(), expected);
     }
 
