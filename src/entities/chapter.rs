@@ -27,7 +27,7 @@ impl Chapter {
             lines: text
                 .split_terminator('\n')
                 .filter(|text| !Line::is_comment(text))
-                .map(|line| Line::new(line))
+                .map(Line::new)
                 .collect(),
         }
     }
@@ -81,7 +81,7 @@ mod tests {
 // コメント行";
         let expected = "　我が輩は猫である。名前はまだない。
 　どこで｜生まれた《・・・・》のかとんと｜見当《けんとう》がつかぬ。";
-        let chapter = Chapter::new(&source);
+        let chapter = Chapter::new(source);
         assert_eq!(chapter.get(), expected);
     }
 }

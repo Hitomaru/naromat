@@ -58,10 +58,7 @@ impl Line {
     /// Format line
     fn format(text: &str) -> Self {
         let line = Self::add_header_space(text.trim());
-        let line = Self::split(&line)
-            .into_iter()
-            .map(|sentence| Sentence::new(&sentence))
-            .collect();
+        let line = Self::split(&line).into_iter().map(Sentence::new).collect();
         Self { elements: line }
     }
 
@@ -87,7 +84,8 @@ impl Line {
 
     pub fn is_comment(text: &str) -> bool {
         let line_head: String = text.trim().chars().take(2).collect();
-        line_head == "//"
+        let comment_headers = vec!["//", ">", "#"];
+        comment_headers.iter().any(|header| line_head.starts_with(header))
     }
 }
 #[cfg(test)]
@@ -98,7 +96,7 @@ mod tests {
     fn get() {
         let source = "我が[輩:.]は[猫:ねこ]である。どこで生まれたかとんと見当がつかぬ。";
         let expected = "　我が｜輩《・》は｜猫《ねこ》である。どこで生まれたかとんと見当がつかぬ。";
-        let line = Line::new(&source);
+        let line = Line::new(source);
         assert_eq!(line.get(), expected);
     }
 
@@ -106,7 +104,7 @@ mod tests {
     fn get_min() {
         let source = "我";
         let expected = "　我";
-        let line = Line::new(&source);
+        let line = Line::new(source);
         assert_eq!(line.get(), expected);
     }
 

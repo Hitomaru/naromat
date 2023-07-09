@@ -21,20 +21,22 @@ fn main() {
                 .help("ext to process(default: txt)")
                 .short("e")
                 .long("ext")
+                .min_values(1)
+                .use_delimiter(true)
                 .takes_value(true),
         );
     let matches = app.get_matches();
     let source = matches.value_of("source").unwrap_or("./");
     let source = Path::new(source);
     let dest = matches.value_of("dest").unwrap_or("./");
-    let ext = matches.value_of("ext").unwrap_or("txt");
+    let exts: Vec<String> = matches.values_of("ext").unwrap().map(|str| str.to_string()).collect();
     if source.is_file() {
-        match process_file(source, dest, ext) {
+        match process_file(source, dest, &exts) {
             Ok(_) => 0,
             Err(_) => 1,
         };
     } else {
-        match process_dir(source, dest, ext) {
+        match process_dir(source, dest, &exts) {
             Ok(_) => 0,
             Err(_) => 1,
         };
@@ -44,10 +46,15 @@ fn main() {
 fn process_file<'file_process>(
     source: &Path,
     target: &'file_process str,
-    ext: &str,
+    exts: &[String],
 ) -> Result<(), FileProcessError<'file_process>> {
-    if source.extension().unwrap() != ext {
-        println!("{} : extension is not a target({})", source.display(), ext);
+    if !exts.contains(
+        &source
+            .extension()
+            .map(|osstr| osstr.to_str().unwrap().to_string())
+            .unwrap(),
+    ) {
+        println!("{} : extension is not a target({})", source.display(), exts.join(","));
         return Ok(());
     }
     print!("{} : processing", source.display());
@@ -79,20 +86,20 @@ fn stringify_path(path: &Path) -> Result<&str, InvalidPathError> {
     }
 }
 
-fn process_dir(source: &Path, target: &str, ext: &str) -> Result<(), Box<dyn std::error::Error + 'static>> {
+fn process_dir(source: &Path, target: &str, exts: &Vec<String>) -> Result<(), Box<dyn std::error::Error + 'static>> {
     println!("{} : processing", source.display());
     for entry in source.read_dir()? {
         let entry = entry?;
         let path = entry.path();
         if path.is_dir() {
-            process_dir(&path, target, ext)?
+            process_dir(&path, target, exts)?
         } else {
             let parent_dir = path.parent().unwrap().to_str().unwrap();
             let file_name = path.file_name().unwrap().to_str().expect("File name cannot be parsed");
             let target_dir = format!("{}/{}", target, parent_dir);
             std::fs::create_dir_all(&target_dir)?;
             let file_name = format!("{}/{}", target_dir, file_name);
-            process_file(&path, file_name.as_str(), ext).unwrap();
+            process_file(&path, file_name.as_str(), exts).unwrap();
         }
     }
     Ok(())
@@ -106,7 +113,7 @@ mod tests {
     #[test]
     fn can_process_recursively() {
         // given
-        let target_ext = "txt";
+        let target_exts = vec!["txt".to_string()];
         let source_dir = "./resources/test/main/can_process_recursively";
         let target_dir = "./resource/test/main/temp";
         let target_dir_path = Path::new(target_dir);
@@ -114,7 +121,7 @@ mod tests {
         let source_file_count = source_dir_path.ancestors().count();
 
         // when
-        process_dir(source_dir_path, target_dir, target_ext).unwrap();
+        process_dir(source_dir_path, target_dir, &target_exts).unwrap();
 
         // then
         let target_file_count = target_dir_path.ancestors().count();
@@ -129,14 +136,14 @@ mod tests {
     #[test]
     fn can_process_a_file() {
         // given
-        let target_ext = "txt";
+        let target_exts = vec!["txt".to_string()];
         let source_file = "./resources/test/main/can_process_a_file/source.txt";
         let target_file = "./resources/test/main/can_process_a_file/temp.txt";
         let target_file_path = Path::new(target_file);
         let source_file_path = Path::new(source_file);
 
         // when
-        process_file(source_file_path, target_file, target_ext).unwrap();
+        process_file(source_file_path, target_file, &target_exts).unwrap();
 
         // then
         let is_processed_file_exists = target_file_path.exists();
@@ -151,14 +158,14 @@ mod tests {
     #[test]
     fn should_not_process_a_ext_differed_file() {
         // given
-        let target_ext = "other";
+        let target_exts = vec!["other".to_string()];
         let source_file = "./resources/test/main/should_not_process_a_ext_differed_file/source.txt";
         let target_file = "./resources/test/main/should_not_process_a_ext_differed_file/temp.txt";
         let target_file_path = Path::new(target_file);
         let source_file_path = Path::new(source_file);
 
         // when
-        process_file(source_file_path, target_file, target_ext).unwrap();
+        process_file(source_file_path, target_file, &target_exts).unwrap();
 
         // then
         let is_processed_file_is_not_exists = !target_file_path.exists();
