@@ -94,7 +94,7 @@ fn process_dir(source: &Path, target: &str, exts: &Vec<String>) -> Result<(), Bo
             let target_dir = format!("{}/{}", target, parent_dir);
             std::fs::create_dir_all(&target_dir)?;
             let file_name = format!("{}/{}", target_dir, file_name);
-            process_file(&path, file_name.as_str(), &exts).unwrap();
+            process_file(&path, file_name.as_str(), exts).unwrap();
         }
     }
     Ok(())
