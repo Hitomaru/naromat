@@ -58,10 +58,7 @@ impl Line {
     /// Format line
     fn format(text: &str) -> Self {
         let line = Self::add_header_space(text.trim());
-        let line = Self::split(&line)
-            .into_iter()
-            .map(|sentence| Sentence::new(sentence))
-            .collect();
+        let line = Self::split(&line).into_iter().map(Sentence::new).collect();
         Self { elements: line }
     }
 

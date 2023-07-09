@@ -1,7 +1,7 @@
 use crate::entities::chapter::Chapter;
 use crate::errors::TextFileOutputError;
-use std::fs;
 use std::fs::File;
+use std::fs::{self, DirBuilder};
 use std::io::Write;
 use std::path::Path;
 
@@ -52,9 +52,12 @@ impl<'file_handling> TextFile {
     }
 
     fn touch_file(path_to: &'file_handling str) -> Result<File, TextFileOutputError> {
-        if Path::new(path_to).exists() {
+        let path = Path::new(path_to);
+        if path.exists() {
             return Err(TextFileOutputError::AlreadyExists(path_to));
         }
+        let dir_path = path.parent().unwrap();
+        DirBuilder::new().recursive(true).create(dir_path).unwrap();
         match File::create(path_to) {
             Ok(file) => Ok(file),
             Err(cause) => Err(TextFileOutputError::CannotCreate(cause)),
