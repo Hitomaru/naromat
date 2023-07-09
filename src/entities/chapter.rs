@@ -27,7 +27,7 @@ impl Chapter {
             lines: text
                 .split_terminator('\n')
                 .filter(|text| !Line::is_comment(text))
-                .map(|line| Line::new(line))
+                .map(Line::new)
                 .collect(),
         }
     }
