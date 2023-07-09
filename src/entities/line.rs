@@ -60,7 +60,7 @@ impl Line {
         let line = Self::add_header_space(text.trim());
         let line = Self::split(&line)
             .into_iter()
-            .map(|sentence| Sentence::new(sentence))
+            .map(Sentence::new)
             .collect();
         Self { elements: line }
     }
