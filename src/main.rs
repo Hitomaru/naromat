@@ -29,7 +29,7 @@ fn main() {
     let source = matches.value_of("source").unwrap_or("./");
     let source = Path::new(source);
     let dest = matches.value_of("dest").unwrap_or("./");
-    let exts = matches.values_of("ext").unwrap().map(|str| {str.to_string()}).collect();
+    let exts = matches.values_of("ext").unwrap().map(|str| str.to_string()).collect();
     if source.is_file() {
         match process_file(source, dest, &exts) {
             Ok(_) => 0,
@@ -48,7 +48,12 @@ fn process_file<'file_process>(
     target: &'file_process str,
     exts: &Vec<String>,
 ) -> Result<(), FileProcessError<'file_process>> {
-    if !exts.contains(&source.extension().map(|osstr| {osstr.to_str().unwrap().to_string()}).unwrap()) {
+    if !exts.contains(
+        &source
+            .extension()
+            .map(|osstr| osstr.to_str().unwrap().to_string())
+            .unwrap(),
+    ) {
         println!("{} : extension is not a target({})", source.display(), exts.join(","));
         return Ok(());
     }
