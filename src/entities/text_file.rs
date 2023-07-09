@@ -1,7 +1,7 @@
 use crate::entities::chapter::Chapter;
 use crate::errors::TextFileOutputError;
-use std::fs::{self, DirBuilder};
 use std::fs::File;
+use std::fs::{self, DirBuilder};
 use std::io::Write;
 use std::path::Path;
 
