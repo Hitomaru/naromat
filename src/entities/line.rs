@@ -84,7 +84,8 @@ impl Line {
 
     pub fn is_comment(text: &str) -> bool {
         let line_head: String = text.trim().chars().take(2).collect();
-        line_head == "//"
+        let comment_headers = vec!["//", ">", "#"];
+        comment_headers.iter().any(|header| line_head.starts_with(header))
     }
 }
 #[cfg(test)]
